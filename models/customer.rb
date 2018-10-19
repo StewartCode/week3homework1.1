@@ -65,9 +65,9 @@ class Customer
     SqlRunner.run(sql)
   end
 
-  # def self.map_items(data)
-  #   result = data.map{|star| Star.new(star)}
-  #   return result
-  # end
+  def self.map_items(data)
+    result = data.map{|star| Customer.new(star)}
+    return result
+  end
 
 end

@@ -40,37 +40,37 @@ class Film
     SqlRunner.run(sql, values)
   end
 
-  # display all the stars for a particular movie
+  #display all the stars for a particular movie
 
-  # def stars()
-  #   sql = "SELECT stars.*
-  #          FROM stars
-  #          INNER JOIN castings
-  #          ON stars.id = castings.star_id
-  #          WHERE movie_id = $1"
-  #   values = [@id]
-  #   star_data = SqlRunner.run(sql, values)
-  #   return Star.map_items(star_data)
-  # end
-  #
-  # # extension
-  #
-  # def castings()
-  #   sql = "SELECT *
-  #          FROM castings
-  #          WHERE movie_id = $1"
-  #   values = [@id]
-  #   casting_data = SqlRunner.run(sql, values)
-  #   return casting_data.map{|casting| Casting.new(casting)}
-  # end
-  #
+  def customers()
+    sql = "SELECT customers.*
+           FROM customers
+           INNER JOIN tickets
+           ON customers.id = tickets.customer_id
+           WHERE film_id = $1"
+    values = [@id]
+    star_data = SqlRunner.run(sql, values)
+    return Star.map_items(star_data)
+  end
+
+  # extension
+
+  def tickets()
+    sql = "SELECT *
+           FROM tickets
+           WHERE movie_id = $1"
+    values = [@id]
+    t_data = SqlRunner.run(sql, values)
+    return t_data.map{|t| Ticket.new(t)}
+  end
+
   # def remaining_budget()
-  #   castings = self.castings()
+  #   tickets = self.tickets()
   #   casting_fees = castings.map{|casting| casting.fee}
   #   combined_fees = casting_fees.sum
   #   return @budget - combined_fees
   # end
-  #
+
   def self.all()
     sql = "SELECT * FROM films"
     films = SqlRunner.run(sql)
@@ -82,9 +82,9 @@ class Film
     SqlRunner.run(sql)
   end
 
-  # def self.map_items(data)
-  #   result = data.map{|movie| Movie.new(movie)}
-  #   return result
-  # end
+  def self.map_items(data)
+    result = data.map{|movie| Movie.new(movie)}
+    return result
+  end
 
 end
