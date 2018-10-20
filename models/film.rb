@@ -70,11 +70,21 @@ class Film
   #   combined_fees = casting_fees.sum
   #   return @budget - combined_fees
   # end
+  def customers()
+    sql = "SELECT customers.*
+           FROM customers
+           INNER JOIN tickets
+           ON customers.id = tickets.customer_id
+           WHERE film_id = $1"
+    values = [@id]
+    f_data = SqlRunner.run(sql, values)
+    return Customer.map_items(f_data)
+  end
 
   def self.all()
     sql = "SELECT * FROM films"
-    films = SqlRunner.run(sql)
-    return Film.map_items(films)
+    f = SqlRunner.run(sql)
+    return Film.map_items(f)
   end
 
   def self.delete_all()
@@ -83,7 +93,7 @@ class Film
   end
 
   def self.map_items(data)
-    result = data.map{|movie| Movie.new(movie)}
+    result = data.map{|movie| Film.new(movie)}
     return result
   end
 

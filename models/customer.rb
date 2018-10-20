@@ -8,7 +8,7 @@ class Customer
   def initialize(options)
     @id = options['id'].to_i if options['id']
     @name = options['name']
-    @funds = options['funds']
+    @funds = options['funds'].to_i
   end
 
   def save()
@@ -40,24 +40,24 @@ class Customer
     values = [@id]
     SqlRunner.run(sql, values)
   end
-  #
-  # # display all the movies a particular star is cast in
-  #
-  # def movies()
-  #   sql = "SELECT movies.*
-  #          FROM movies
-  #          INNER JOIN castings
-  #          ON movies.id = castings.movie_id
-  #          WHERE star_id = $1"
-  #   values = [@id]
-  #   movie_data = SqlRunner.run(sql, values)
-  #   return Movie.map_items(movie_data)
-  # end
-  #
+
+  # display all the films a particular customer is booked in
+
+  def films()
+    sql = "SELECT films.*
+           FROM films
+           INNER JOIN tickets
+           ON films.id = tickets.film_id
+           WHERE customer_id = $1"
+    values = [@id]
+    f_data = SqlRunner.run(sql, values)
+    return Film.map_items(f_data)
+  end
+
   def self.all()
     sql = "SELECT * FROM customers"
-    star_data = SqlRunner.run(sql)
-    return Star.map_items(star_data)
+    customer_data = SqlRunner.run(sql)
+    return Customer.map_items(customer_data)
   end
 
   def self.delete_all()
